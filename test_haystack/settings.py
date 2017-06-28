@@ -35,9 +35,11 @@ INSTALLED_APPS = [
     # Confirm that everything works with app labels which have more than one level of hierarchy
     # as reported in https://github.com/django-haystack/django-haystack/issues/1152
     'test_haystack.test_app_with_hierarchy.contrib.django.hierarchal_app_django',
-
-    'test_haystack.test_app_using_appconfig.apps.SimpleTestAppConfig',
 ]
+
+import django
+if django.VERSION >= (1, 7):
+    INSTALLED_APPS.append('test_haystack.test_app_using_appconfig.apps.SimpleTestAppConfig')
 
 TEMPLATES = [
     {

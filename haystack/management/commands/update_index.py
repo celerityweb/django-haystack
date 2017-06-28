@@ -7,8 +7,14 @@ import os
 import time
 from datetime import timedelta
 
+try:
+    from django.db import close_old_connections
+except ImportError:
+    # This can be removed when we drop support for Django 1.7 and earlier:
+    from django.db import close_connection as close_old_connections
+
 from django.core.management.base import BaseCommand
-from django.db import close_old_connections, reset_queries
+from django.db import reset_queries
 from django.utils.encoding import force_text, smart_bytes
 from django.utils.timezone import now
 

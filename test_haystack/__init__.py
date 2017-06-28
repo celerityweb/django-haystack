@@ -10,16 +10,22 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'test_haystack.settings'
 
 
 import django
-django.setup()
+if hasattr(django, 'setup'):
+    django.setup()
 
 
 def setup():
     global test_runner
     global old_config
 
-    from django.test.runner import DiscoverRunner
+    try:
+        from django.test.simple import DjangoTestSuiteRunner as TestSuiteRunner
+    except ImportError:
+        # DjangoTestSuiteRunner was deprecated in django 1.8:
+        # https://docs.djangoproject.com/en/1.8/internals/deprecation/#deprecation-removed-in-1-8
+        from django.test.runner import DiscoverRunner as TestSuiteRunner
 
-    test_runner = DiscoverRunner()
+    test_runner = TestSuiteRunner()
     test_runner.setup_test_environment()
     old_config = test_runner.setup_databases()
 

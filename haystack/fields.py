@@ -180,7 +180,7 @@ class SearchField(object):
             template_names = ['search/indexes/%s/%s_%s.txt' % (app_label, model_name, self.instance_name)]
 
         t = loader.select_template(template_names)
-        return t.render({'object': obj})
+        return t.render(Context({'object': obj}))
 
     def convert(self, value):
         """
@@ -223,7 +223,7 @@ class LocationField(SearchField):
             return None
 
         pnt = ensure_point(value)
-        pnt_lng, pnt_lat = pnt.coords
+        pnt_lng, pnt_lat = pnt.get_coords()
         return "%s,%s" % (pnt_lat, pnt_lng)
 
     def convert(self, value):
